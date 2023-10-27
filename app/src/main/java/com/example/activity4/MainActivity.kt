@@ -91,7 +91,6 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
     var textemail by remember { mutableStateOf("") }
 
 
-
     val context = LocalContext.current
     val dataForm: DataForm
     val uiState by cobaViewModel.uiState.collectAsState()
@@ -123,7 +122,7 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
         })
 
     OutlinedTextField(
-        value = textemail ,
+        value = textemail,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         shape = MaterialTheme.shapes.large,
@@ -134,11 +133,16 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
         })
 
 
-    SelectJK(
-        options = jenis.map { id -> context.resources.getString(id) },
-        onSelectionChanged = { cobaViewModel.setJenisK(it) }
+    Row {
+        SelectJK(
+            options = jenis.map { id -> context.resources.getString(id) },
+            onSelectionChanged = { cobaViewModel.setJenisK(it) }
 
-    )
+        )
+    }
+
+
+
     OutlinedTextField(
         value = textAlmt,
         singleLine = true,
@@ -180,32 +184,38 @@ fun SelectJK(
 
 ) {
     var selectedValue by rememberSaveable { mutableStateOf("") }
+    Column{
+        Text(
+            text = "Jenis Kelamin:",
+        )
+        Row(modifier = Modifier.padding(16.dp)) {
+            options.forEach { item ->
+                Row(
+                    modifier = Modifier.selectable(
+                        selected = selectedValue == item,
+                        onClick = {
+                            selectedValue = item
+                            onSelectionChanged(item)
+                        }
+                    ),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    RadioButton(
+                        selected = selectedValue == item,
+                        onClick = {
+                            selectedValue = item
+                            onSelectionChanged(item)
+                        }
+                    )
+                    Text(item)
 
-    Column(modifier = Modifier.padding(16.dp)) {
-        options.forEach { item ->
-            Row(
-                modifier = Modifier.selectable(
-                    selected = selectedValue == item,
-                    onClick = {
-                        selectedValue = item
-                        onSelectionChanged(item)
-                    }
-                ), verticalAlignment = Alignment.CenterVertically
-            ) {
-                RadioButton(
-                    selected = selectedValue == item,
-                    onClick = {
-                        selectedValue = item
-                        onSelectionChanged(item)
-                    }
-                )
-                Text(item)
 
-
+                }
             }
-        }
 
+        }
     }
+
 
 }
 
