@@ -63,6 +63,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun TampilLayout(modifier: Modifier = Modifier) {
+
     Card(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
@@ -94,6 +95,10 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
     val uiState by cobaViewModel.uiState.collectAsState()
     dataForm = uiState
 
+
+
+
+
     OutlinedTextField(
         value = textNama,
         singleLine = true,
@@ -113,6 +118,12 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
         onValueChange = {
             textTlp = it
         })
+
+    SelectJK(
+        options = jenis.map { id -> context.resources.getString(id) },
+        onSelectionChanged = { cobaViewModel.setJenisK(it) }
+
+    )
     OutlinedTextField(
         value = textAlmt,
         singleLine = true,
@@ -122,11 +133,6 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
         onValueChange = {
             textAlmt = it
         })
-    SelectJK(
-        options = jenis.map { id -> context.resources.getString(id) },
-        onSelectionChanged = { cobaViewModel.setJenisK(it) }
-
-    )
     Button(
         modifier = Modifier.fillMaxWidth(),
         onClick = {
@@ -139,6 +145,7 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
 
 
     }
+
     Spacer(modifier = Modifier.height(100.dp))
     TampilHasil(
         namanya = cobaViewModel.namaUser,
