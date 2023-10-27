@@ -88,6 +88,8 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
     var textNama by remember { mutableStateOf("") }
     var textTlp by remember { mutableStateOf("") }
     var textAlmt by remember { mutableStateOf("") }
+    var textemail by remember { mutableStateOf("") }
+
 
 
     val context = LocalContext.current
@@ -108,6 +110,7 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
         onValueChange = {
             textNama = it
         })
+
     OutlinedTextField(
         value = textTlp,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -118,6 +121,18 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
         onValueChange = {
             textTlp = it
         })
+
+    OutlinedTextField(
+        value = textemail ,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        singleLine = true,
+        shape = MaterialTheme.shapes.large,
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text(text = "E-mail") },
+        onValueChange = {
+            textemail = it
+        })
+
 
     SelectJK(
         options = jenis.map { id -> context.resources.getString(id) },
@@ -136,7 +151,7 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
     Button(
         modifier = Modifier.fillMaxWidth(),
         onClick = {
-            cobaViewModel.insertData(textNama, textTlp, dataForm.sex, textAlmt)
+            cobaViewModel.insertData(textNama, textTlp, dataForm.sex, textAlmt, textemail)
         }) {
         Text(
             text = stringResource(R.string.submit),
