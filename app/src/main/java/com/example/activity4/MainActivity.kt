@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.activity4.data.DataForm
 import com.example.activity4.data.DataSource.jenis
+import com.example.activity4.data.DataSource.jenisSt
 import com.example.activity4.ui.theme.Activity4Theme
 
 class MainActivity : ComponentActivity() {
@@ -139,7 +140,13 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
             onSelectionChanged = { cobaViewModel.setJenisK(it) }
 
         )
+
     }
+    SelectST(
+        options = jenisSt.map { id -> context.resources.getString(id) },
+        onSelectionChanged = { cobaViewModel.setStatus(it) }
+
+    )
 
 
 
@@ -155,7 +162,7 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
     Button(
         modifier = Modifier.fillMaxWidth(),
         onClick = {
-            cobaViewModel.insertData(textNama, textTlp, dataForm.sex, textAlmt, textemail)
+            cobaViewModel.insertData(textNama, textTlp, dataForm.sex, textAlmt, textemail, dataForm.status)
         }) {
         Text(
             text = stringResource(R.string.submit),
@@ -187,6 +194,48 @@ fun SelectJK(
     Column{
         Text(
             text = "Jenis Kelamin:",
+        )
+        Row(modifier = Modifier.padding(16.dp)) {
+            options.forEach { item ->
+                Row(
+                    modifier = Modifier.selectable(
+                        selected = selectedValue == item,
+                        onClick = {
+                            selectedValue = item
+                            onSelectionChanged(item)
+                        }
+                    ),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    RadioButton(
+                        selected = selectedValue == item,
+                        onClick = {
+                            selectedValue = item
+                            onSelectionChanged(item)
+                        }
+                    )
+                    Text(item)
+
+
+                }
+            }
+
+        }
+    }
+
+
+}
+
+@Composable
+fun SelectST(
+    options: List<String>,
+    onSelectionChanged: (String) -> Unit = {}
+
+) {
+    var selectedValue by rememberSaveable { mutableStateOf("") }
+    Column{
+        Text(
+            text = "Status:",
         )
         Row(modifier = Modifier.padding(16.dp)) {
             options.forEach { item ->
